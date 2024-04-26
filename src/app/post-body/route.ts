@@ -24,7 +24,7 @@ export const POST = async (incomingRequest: Request) => {
     } else {
       if (request.headers.has('Content-Length') && request.headers.get('Content-Length') !== '0') {
         const { error, fields, files } = await nextFileUpload({
-          request: request as Request,
+          request,
         })
 
         if (error) {
