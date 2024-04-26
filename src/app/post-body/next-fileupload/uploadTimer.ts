@@ -6,8 +6,8 @@ type CreateUploadTimer = (
   set: () => boolean
 }
 
-export const createUploadTimer: CreateUploadTimer = (timeout = 0, callback = () => {}) => {
-  let timer = null
+export const createUploadTimer: CreateUploadTimer = (timeout = 0, callback = () => { }) => {
+  let timer: NodeJS.Timeout
 
   const clear = () => {
     clearTimeout(timer)

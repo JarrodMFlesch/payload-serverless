@@ -123,7 +123,7 @@ export const checkAndMakeDir: CheckAndMakeDir = (fileUploadOptions, filePath) =>
  * Delete a file.
  */
 type DeleteFile = (filePath: string, callback: (args: any) => void) => void
-export const deleteFile: DeleteFile = (filePath, callback: (args) => void) =>
+export const deleteFile: DeleteFile = (filePath, callback: (args: any) => void) =>
   fs.unlink(filePath, callback)
 
 /**
@@ -136,7 +136,7 @@ const copyFile: CopyFile = (src, dst, callback) => {
   const runCb = (err?: Error) => {
     if (cbCalled) return
     cbCalled = true
-    callback(err)
+    err ? callback(err) : undefined
   }
   // Create read stream
   const readable = fs.createReadStream(src)
@@ -159,7 +159,7 @@ const copyFile: CopyFile = (src, dst, callback) => {
 type MoveFile = (
   src: string,
   dst: string,
-  callback: (err: Error, renamed?: boolean) => void,
+  callback: (err?: Error, renamed?: boolean) => void,
 ) => void
 export const moveFile: MoveFile = (src, dst, callback) =>
   fs.rename(src, dst, (err) => {
@@ -169,7 +169,7 @@ export const moveFile: MoveFile = (src, dst, callback) =>
       return
     }
     // File was renamed successfully: Add true to the callback to indicate that.
-    callback(null, true)
+    callback(undefined, true)
   })
 
 /**
@@ -177,16 +177,16 @@ export const moveFile: MoveFile = (src, dst, callback) =>
  * @param {Buffer} buffer - buffer to save to a file.
  * @param {string} filePath - path to a file.
  */
-export const saveBufferToFile = (buffer, filePath, callback) => {
+export const saveBufferToFile = (buffer: Buffer, filePath: string, callback: (err?: Error, renamed?: boolean) => void) => {
   if (!Buffer.isBuffer(buffer)) {
     return callback(new Error('buffer variable should be type of Buffer!'))
   }
   // Setup readable stream from buffer.
-  let streamData = buffer
+  let streamData: Buffer | undefined = buffer
   const readStream = new Readable()
   readStream._read = () => {
     readStream.push(streamData)
-    streamData = null
+    streamData = undefined
   }
   // Setup file system writable stream.
   const fstream = fs.createWriteStream(filePath)
@@ -209,7 +209,7 @@ export const saveBufferToFile = (buffer, filePath, callback) => {
  * @param fileName {String} - file name to decode.
  * @returns {String}
  */
-const uriDecodeFileName = (opts, fileName) => {
+const uriDecodeFileName = (opts: any, fileName: string) => {
   if (!opts || !opts.uriDecodeFileNames) {
     return fileName
   }
@@ -257,14 +257,14 @@ export const parseFileNameExtension: ParseFileNameExtension = (preserveExtension
   if (nameParts.length < 2) return defaultResult
 
   let extension = nameParts.pop()
-  if (extension.length > maxExtLength && maxExtLength > 0) {
+  if (extension && extension.length > maxExtLength && maxExtLength > 0) {
     nameParts[nameParts.length - 1] += '.' + extension.substr(0, extension.length - maxExtLength)
     extension = extension.substr(-maxExtLength)
   }
 
   return {
     name: nameParts.join('.'),
-    extension: maxExtLength ? extension : '',
+    extension: (maxExtLength && extension) ? extension : '',
   }
 }
 
@@ -287,7 +287,7 @@ export const parseFileName: ParseFileName = (opts, fileName) => {
       ? opts.safeFileNames
       : SAFE_FILE_NAME_REGEX
   // Parse file name extension.
-  const parsedFileName = parseFileNameExtension(opts.preserveExtension, parsedName)
+  const parsedFileName = parseFileNameExtension(opts.preserveExtension ?? true, parsedName)
   if (parsedFileName.extension.length)
     parsedFileName.extension = '.' + parsedFileName.extension.replace(nameRegex, '')
 

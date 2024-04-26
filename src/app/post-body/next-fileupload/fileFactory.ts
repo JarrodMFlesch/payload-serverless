@@ -21,6 +21,7 @@ type MoveFile = (
  */
 const moveFromTemp: MoveFile = (filePath, options, fileUploadOptions) => (resolve, reject) => {
   debugLog(fileUploadOptions, `Moving temporary file ${options.tempFilePath} to ${filePath}`)
+  // @ts-ignore
   moveFile(options.tempFilePath, filePath, promiseCallback(resolve, reject))
 }
 
@@ -30,6 +31,7 @@ const moveFromTemp: MoveFile = (filePath, options, fileUploadOptions) => (resolv
  */
 const moveFromBuffer: MoveFile = (filePath, options, fileUploadOptions) => (resolve, reject) => {
   debugLog(fileUploadOptions, `Moving uploaded buffer to ${filePath}`)
+  // @ts-ignore
   saveBufferToFile(options.buffer, filePath, promiseCallback(resolve, reject))
 }
 

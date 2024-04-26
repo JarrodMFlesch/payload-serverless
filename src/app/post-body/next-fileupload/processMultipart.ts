@@ -35,12 +35,12 @@ export const processMultipart: ProcessMultipart = async ({ options, request }) =
     files: undefined,
   }
 
-  const headersObject = {}
+  const headersObject: Record<string, any> = {}
   request.headers.forEach((value, name) => {
     headersObject[name] = value
   })
 
-  const busboy = Busboy({ ...options, headers: headersObject, debug: true })
+  const busboy = Busboy({ ...options, headers: headersObject })
 
   // Build multipart req.body fields
   busboy.on('field', (field, val) => {
@@ -54,16 +54,6 @@ export const processMultipart: ProcessMultipart = async ({ options, request }) =
       result.files = processNested(result.files)
     }
 
-    if (request[waitFlushProperty]) {
-      try {
-        await Promise.all(request[waitFlushProperty]).then(() => {
-          delete request[waitFlushProperty]
-        })
-      } catch (err) {
-        debugLog(options, `Error waiting for file write promises: ${err}`)
-      }
-    }
-
     return result
   })
 
@@ -73,7 +63,7 @@ export const processMultipart: ProcessMultipart = async ({ options, request }) =
     throw new APIError('Busboy error parsing multipart request', httpStatus.BAD_REQUEST)
   })
 
-  if (!request.searchParams.has('skip-reader')) {
+  if (!request.searchParams.has('skip-reader') && request.body) {
     console.log(request.body)
     const reader = request.body.getReader()
     // Start parsing request

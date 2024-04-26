@@ -1,6 +1,6 @@
 import { isSafeFromPollution } from './utilities'
 
-export const processNested = function (data) {
+export const processNested = function (data: any) {
   if (!data || data.length < 1) return Object.create(null)
 
   const d = Object.create(null),
