@@ -43,6 +43,9 @@ dependencies:
     version: 0.32.6
 
 devDependencies:
+  '@types/busboy':
+    specifier: ^1.5.3
+    version: 1.5.3
   '@types/node':
     specifier: ^20
     version: 20.12.7
@@ -2200,7 +2203,6 @@ packages:
     resolution: {integrity: sha512-YMBLFN/xBD8bnqywIlGyYqsNFXu6bsiY7h3Ae0kO17qEuTjsqeyYMRPSUDacIKIquws2Y6KjmxAyNx8xB3xQbw==}
     dependencies:
       '@types/node': 20.12.7
-    dev: false
 
   /@types/glob@7.2.0:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
