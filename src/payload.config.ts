@@ -26,5 +26,7 @@ export default buildConfig({
   // TODO: Vercel Blob Storage
 
   sharp,
-
+  upload: {
+    debug: true,
+  }
 });
