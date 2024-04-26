@@ -12,15 +12,15 @@
     "generate:types": "payload generate:types"
   },
   "dependencies": {
-    "@payloadcms/db-mongodb": "3.0.0-beta.14",
-    "@payloadcms/next": "3.0.0-beta.14",
-    "@payloadcms/richtext-lexical": "3.0.0-beta.14",
+    "@payloadcms/db-mongodb": "3.0.0-beta.19",
+    "@payloadcms/next": "3.0.0-beta.19",
+    "@payloadcms/richtext-lexical": "3.0.0-beta.18",
     "busboy": "^1.6.0",
     "cross-env": "^7.0.3",
     "graphql": "^16.8.1",
     "http-status": "^1.7.4",
     "next": "14.3.0-canary.19",
-    "payload": "3.0.0-beta.14",
+    "payload": "3.0.0-beta.19",
     "react": "^18",
     "react-dom": "^18",
     "sharp": "0.32.6"
